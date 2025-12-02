@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaku-ora</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #f9f7f3;
+            color: #2c2c2c;
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: normal;
+            font-size: 2.5em;
+            margin-bottom: 0.2em;
+            letter-spacing: 0.05em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 2em;
+            font-style: italic;
+        }
+
+        .input-section {
+            margin-bottom: 2em;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            font-family: inherit;
+            font-size: 1.1em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+            min-height: 80px;
+            background: white;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #888;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            font-family: inherit;
+            font-size: 1.1em;
+            background: #2c2c2c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #444;
+        }
+
+        button:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+
+        .response-section {
+            display: none;
+            margin-top: 2em;
+            padding-top: 2em;
+            border-top: 1px solid #ddd;
+        }
+
+        .response-section.visible {
+            display: block;
+        }
+
+        .label {
+            font-size: 0.85em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5em;
+        }
+
+        .answer {
+            font-size: 1.4em;
+            font-style: italic;
+            margin-bottom: 1.5em;
+            line-height: 1.4;
+        }
+
+        .interpretation {
+            line-height: 1.7;
+            color: #444;
+            white-space: pre-wrap;
+        }
+
+        .error {
+            color: #c44;
+            padding: 15px;
+            background: #fee;
+            border-radius: 4px;
+        }
+
+        .loading {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h1>Kaku-ora</h1>
+    <p class="subtitle">Ask the oracle. Receive sage advice.</p>
+
+    <div class="input-section">
+        <textarea id="question" placeholder="What is the mind of no mind?"></textarea>
+        <button id="ask-btn" onclick="askOracle()">Ask</button>
+    </div>
+
+    <div id="response" class="response-section">
+        <div class="label">The Oracle Speaks</div>
+        <div id="answer" class="answer"></div>
+
+        <div class="label">Capping Verse</div>
+        <div id="interpretation" class="interpretation"></div>
+    </div>
+
+    <script type="module">
+        import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js";
+
+        let client = null;
+
+        // Initialize client on load
+        async function initClient() {
+            try {
+                client = await Client.connect("gworley3/kakuora");
+            } catch (e) {
+                console.error("Failed to connect to oracle:", e);
+            }
+        }
+
+        initClient();
+
+        window.askOracle = async function() {
+            const questionEl = document.getElementById('question');
+            const responseEl = document.getElementById('response');
+            const answerEl = document.getElementById('answer');
+            const interpretationEl = document.getElementById('interpretation');
+            const btnEl = document.getElementById('ask-btn');
+
+            const question = questionEl.value.trim();
+            if (!question) return;
+
+            // Show loading state
+            btnEl.disabled = true;
+            btnEl.textContent = 'Consulting...';
+            responseEl.classList.add('visible');
+            answerEl.innerHTML = '<span class="loading">The oracle contemplates...</span>';
+            interpretationEl.textContent = '';
+
+            try {
+                if (!client) {
+                    client = await Client.connect("gworley3/kakuora");
+                }
+
+                const result = await client.predict("/consult", {
+                    question: question
+                });
+
+                const [answer, interpretation] = result.data;
+                answerEl.textContent = answer;
+                interpretationEl.textContent = interpretation;
+
+            } catch (e) {
+                console.error("Error:", e);
+                answerEl.innerHTML = '<span class="error">The oracle is silent. Please try again.</span>';
+                interpretationEl.textContent = '';
+            } finally {
+                btnEl.disabled = false;
+                btnEl.textContent = 'Ask';
+            }
+        };
+
+        // Allow Enter key to submit (Shift+Enter for newline)
+        document.getElementById('question').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                window.askOracle();
+            }
+        });
+    </script>
+</body>
+</html>
