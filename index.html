@@ -1,210 +1,647 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kaku-ora</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        * {
-            box-sizing: border-box;
-        }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-        body {
-            font-family: Georgia, 'Times New Roman', serif;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            background: #f9f7f3;
-            color: #2c2c2c;
-            min-height: 100vh;
-        }
+      html,
+      body {
+        background: #fff;
+      }
 
-        h1 {
-            text-align: center;
-            font-weight: normal;
-            font-size: 2.5em;
-            margin-bottom: 0.2em;
-            letter-spacing: 0.05em;
-        }
+      body {
+        font-family: "Crimson Text", "Noto Serif JP", serif;
+        min-height: 100vh;
+      }
 
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 2em;
-            font-style: italic;
-        }
+      .header-section {
+        background: #fff;
+        padding: 40px 20px 0.5em 20px;
+      }
 
-        .input-section {
-            margin-bottom: 2em;
-        }
+      .header-content {
+        max-width: 650px;
+        margin: 0 auto;
+      }
 
-        textarea {
-            width: 100%;
-            padding: 15px;
-            font-family: inherit;
-            font-size: 1.1em;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            resize: vertical;
-            min-height: 80px;
-            background: white;
-        }
+      .logo {
+        display: block;
+        max-width: 320px;
+        margin: 0 auto 0.5em auto;
+      }
 
-        textarea:focus {
-            outline: none;
-            border-color: #888;
-        }
+      h1 {
+        text-align: center;
+        font-family: "Noto Serif JP", serif;
+        font-weight: 600;
+        font-size: 2.2em;
+        margin-bottom: 0.1em;
+        letter-spacing: 0.15em;
+        color: #2d2d2d;
+      }
 
-        button {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            font-family: inherit;
-            font-size: 1.1em;
-            background: #2c2c2c;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
+      .gradient-section {
+        background: linear-gradient(
+          to bottom,
+          #fff 0%,
+          #e8eaed 15%,
+          #a0aab8 40%,
+          #5a6a7a 65%,
+          #3d4d5d 85%,
+          #2d3a4a 100%
+        );
+        padding: 0 20px;
+        height: 120px;
+      }
 
-        button:hover {
-            background: #444;
-        }
+      .gradient-content {
+        max-width: 650px;
+        margin: 0 auto;
+        padding-top: 0.5em;
+        text-align: center;
+      }
 
-        button:disabled {
-            background: #999;
-            cursor: not-allowed;
-        }
+      .subtitle {
+        text-align: center;
+        color: #c85040;
+        font-style: italic;
+        font-size: 1.1em;
+        font-weight: 600;
+      }
 
-        .response-section {
-            display: none;
-            margin-top: 2em;
-            padding-top: 2em;
-            border-top: 1px solid #ddd;
-        }
+      .main-section {
+        background: #2d3a4a;
+        padding: 0 20px 40px 20px;
+        min-height: 100vh;
+        position: relative;
+      }
 
-        .response-section.visible {
-            display: block;
-        }
+      .main-content {
+        max-width: 650px;
+        margin: 0 auto;
+        min-height: calc(100vh - 1.5em - 40px);
+        display: flex;
+        flex-direction: column;
+      }
 
-        .label {
-            font-size: 0.85em;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 0.5em;
-        }
+      .input-section {
+        margin-top: -40px;
+        margin-bottom: 2em;
+        position: relative;
+        z-index: 1;
+      }
 
-        .answer {
-            font-size: 1.4em;
-            font-style: italic;
-            margin-bottom: 1.5em;
-            line-height: 1.4;
-        }
+      textarea {
+        width: 100%;
+        padding: 16px;
+        font-family: "Crimson Text", serif;
+        font-size: 1.15em;
+        border: 1px solid #c9b89a;
+        border-radius: 2px;
+        resize: vertical;
+        min-height: 90px;
+        background: #e8dcc8;
+        color: #2d2d2d;
+      }
 
-        .interpretation {
-            line-height: 1.7;
-            color: #444;
-            white-space: pre-wrap;
-        }
+      textarea:focus {
+        outline: none;
+        border-color: #b8a080;
+        background: #f0e8d8;
+      }
 
-        .error {
-            color: #c44;
-            padding: 15px;
-            background: #fee;
-            border-radius: 4px;
-        }
+      textarea::placeholder {
+        color: #7a6a50;
+        font-style: italic;
+      }
 
-        .loading {
-            text-align: center;
-            color: #666;
-            font-style: italic;
+      button {
+        display: block;
+        width: 100%;
+        padding: 14px;
+        margin-top: 12px;
+        font-family: "Noto Serif JP", serif;
+        font-size: 1.1em;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        background: #7ec8e3;
+        color: #1a2a3a;
+        border: none;
+        border-radius: 2px;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 0 15px rgba(126, 200, 227, 0.5);
+      }
+
+      button:hover {
+        background: #9dd8ef;
+        box-shadow: 0 0 25px rgba(126, 200, 227, 0.8);
+      }
+
+      button:disabled {
+        background: #4a6a7a;
+        color: #7a8a9a;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      .floating-leaves-container {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 180px;
+        bottom: 150px;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .floating-leaves-container.hidden {
+        display: none;
+      }
+
+      .floating-leaves {
+        width: 100%;
+        height: 100%;
+        opacity: 0.7;
+        mask-image: radial-gradient(
+          ellipse 80% 70% at center,
+          black 30%,
+          transparent 65%
+        );
+        -webkit-mask-image: radial-gradient(
+          ellipse 80% 70% at center,
+          black 30%,
+          transparent 65%
+        );
+      }
+
+      .response-section {
+        display: none;
+        margin-top: 2.5em;
+        padding-top: 2em;
+        border-top: 1px solid #4a5a6a;
+      }
+
+      .response-section.visible {
+        display: block;
+      }
+
+      .label {
+        font-family: "Noto Serif JP", serif;
+        font-size: 0.8em;
+        font-weight: 600;
+        color: #999;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        margin-bottom: 0.6em;
+      }
+
+      .answer {
+        font-size: 1.5em;
+        font-style: italic;
+        margin-bottom: 2em;
+        line-height: 1.5;
+        color: #e8e8e8;
+      }
+
+      .interpretation {
+        font-size: 1.1em;
+        line-height: 1.8;
+        color: #ccc;
+        white-space: pre-wrap;
+      }
+
+      .error {
+        color: #ff6b6b;
+        padding: 15px;
+        background: #3a2020;
+        border: 1px solid #662222;
+        border-radius: 2px;
+      }
+
+      .loading {
+        text-align: center;
+        color: #888;
+        font-style: italic;
+      }
+
+      .footer-gradient {
+        background: linear-gradient(
+          to bottom,
+          #2d3a4a 0%,
+          #3d4d5d 15%,
+          #5a6a7a 35%,
+          #a0aab8 60%,
+          #e8eaed 85%,
+          #fff 100%
+        );
+        padding: 0 20px;
+        height: 120px;
+      }
+
+      .footer-section {
+        background: #fff;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .footer-content {
+        max-width: 650px;
+        margin: 0 auto;
+        color: #666;
+        font-size: 0.9em;
+      }
+
+      .footer-content a {
+        color: #2d3a4a;
+      }
+
+      .lotus-wrapper {
+        margin-top: auto;
+        padding-top: 3em;
+        text-align: center;
+      }
+
+      .lotus {
+        width: 80px;
+        height: 48px;
+        opacity: 0.9;
+      }
+
+      /* Meditation overlay */
+      .meditation-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(20, 30, 40, 0.95);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition:
+          opacity 2s ease,
+          visibility 2s ease;
+      }
+
+      .meditation-overlay.visible {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .meditation-text {
+        color: #9dd8ef;
+        font-size: 1.8em;
+        font-style: italic;
+        text-align: center;
+        margin-bottom: 3em;
+        max-width: 500px;
+        line-height: 1.6;
+      }
+
+      .breathing-container {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .breathing-circle {
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(126, 200, 227, 0.4) 0%,
+          rgba(126, 200, 227, 0.1) 70%,
+          transparent 100%
+        );
+        box-shadow: 0 0 40px rgba(126, 200, 227, 0.3);
+        animation: breathe 10s ease-in-out infinite;
+      }
+
+      .breathing-lotus {
+        position: relative;
+        z-index: 1;
+        width: 80px;
+        height: 48px;
+        opacity: 0.9;
+      }
+
+      @keyframes breathe {
+        0%,
+        100% {
+          transform: scale(0.6);
+          opacity: 0.5;
         }
+        50% {
+          transform: scale(1.4);
+          opacity: 1;
+        }
+      }
+
+      .breathing-label {
+        color: #7a8a9a;
+        font-size: 0.9em;
+        margin-top: 8em;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+      }
     </style>
-</head>
-<body>
-    <h1>Kaku-ora</h1>
-    <p class="subtitle">Ask the oracle. Receive sage advice.</p>
-
-    <div class="input-section">
-        <textarea id="question" placeholder="What is the mind of no mind?"></textarea>
-        <button id="ask-btn" onclick="askOracle()">Ask</button>
+  </head>
+  <body>
+    <div class="header-section">
+      <div class="header-content">
+        <img src="img/kakuora_full.png" alt="Kaku-ora" class="logo" />
+        <h1>KAKU-ORA</h1>
+      </div>
     </div>
 
-    <div id="response" class="response-section">
-        <div class="label">The Oracle Speaks</div>
-        <div id="answer" class="answer"></div>
+    <div class="gradient-section">
+      <div class="gradient-content">
+        <p class="subtitle">ask the oracle what must be asked</p>
+      </div>
+    </div>
 
-        <div class="label">Capping Verse</div>
-        <div id="interpretation" class="interpretation"></div>
+    <div class="main-section">
+      <div class="main-content">
+        <div class="input-section">
+          <textarea
+            id="question"
+            placeholder="What is the mind of no mind?"
+          ></textarea>
+          <button id="ask-btn" onclick="askOracle()">Consult</button>
+        </div>
+
+        <div id="response" class="response-section">
+          <div class="label">The Oracle Speaks</div>
+          <div id="answer" class="answer"></div>
+
+          <div class="label">Capping Verse</div>
+          <div id="interpretation" class="interpretation"></div>
+        </div>
+
+        <div class="lotus-wrapper">
+          <img src="img/lotus.svg" alt="" class="lotus" />
+        </div>
+      </div>
+
+      <div id="floating-leaves" class="floating-leaves-container">
+        <svg
+          class="floating-leaves"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="xMidYMid slice"
+        >
+          <defs>
+            <filter id="leaf-glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="0.3" result="coloredBlur" />
+              <feMerge>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+          <g id="leaves-container"></g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="footer-gradient"></div>
+
+    <!-- Meditation overlay -->
+    <div id="meditation-overlay" class="meditation-overlay">
+      <div class="meditation-text">
+        the oracle contemplates<br /><br />
+        contemplate with it
+      </div>
+      <div class="breathing-container">
+        <div class="breathing-circle"></div>
+        <img src="img/lotus-cinnabar.svg" alt="" class="breathing-lotus" />
+      </div>
+      <div class="breathing-label">breathe</div>
+    </div>
+
+    <div class="footer-section">
+      <div class="footer-content">
+        <a href="about.html">What lies beyond the gate?</a>
+      </div>
     </div>
 
     <script type="module">
-        import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js";
+      import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js";
 
-        let client = null;
+      let client = null;
 
-        // Initialize client on load
-        async function initClient() {
-            try {
-                client = await Client.connect("gworley3/kakuora");
-            } catch (e) {
-                console.error("Failed to connect to oracle:", e);
-            }
+      // Initialize client on load
+      async function initClient() {
+        try {
+          client = await Client.connect("gworley3/kakuora");
+        } catch (e) {
+          console.error("Failed to connect to oracle:", e);
+        }
+      }
+
+      initClient();
+
+      window.askOracle = async function () {
+        const questionEl = document.getElementById("question");
+        const responseEl = document.getElementById("response");
+        const answerEl = document.getElementById("answer");
+        const interpretationEl = document.getElementById("interpretation");
+        const btnEl = document.getElementById("ask-btn");
+        const leavesEl = document.getElementById("floating-leaves");
+        const overlayEl = document.getElementById("meditation-overlay");
+
+        const question = questionEl.value.trim();
+        if (!question) return;
+
+        // Hide floating leaves and show meditation overlay
+        leavesEl.classList.add("hidden");
+        btnEl.disabled = true;
+        btnEl.textContent = "...";
+        overlayEl.classList.add("visible");
+
+        const startTime = Date.now();
+        const minDisplayTime = 20000; // 20 seconds minimum
+
+        try {
+          if (!client) {
+            client = await Client.connect("gworley3/kakuora");
+          }
+
+          const result = await client.predict("/consult", {
+            question: question,
+          });
+
+          const [answer, interpretation] = result.data;
+
+          // Wait for minimum display time
+          const elapsed = Date.now() - startTime;
+          if (elapsed < minDisplayTime) {
+            await new Promise((resolve) =>
+              setTimeout(resolve, minDisplayTime - elapsed),
+            );
+          }
+
+          // Fade out overlay first
+          overlayEl.classList.remove("visible");
+
+          // Wait for fade out before showing results
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+
+          responseEl.classList.add("visible");
+          answerEl.textContent = answer;
+          interpretationEl.textContent = interpretation;
+        } catch (e) {
+          console.error("Error:", e);
+
+          // Still wait for minimum display time on error
+          const elapsed = Date.now() - startTime;
+          if (elapsed < minDisplayTime) {
+            await new Promise((resolve) =>
+              setTimeout(resolve, minDisplayTime - elapsed),
+            );
+          }
+
+          overlayEl.classList.remove("visible");
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+          responseEl.classList.add("visible");
+          answerEl.innerHTML =
+            '<span class="error">The oracle is silent. Please try again.</span>';
+          interpretationEl.textContent = "";
+        } finally {
+          btnEl.disabled = false;
+          btnEl.textContent = "Consult";
+        }
+      };
+
+      // Allow Enter key to submit (Shift+Enter for newline)
+      document
+        .getElementById("question")
+        .addEventListener("keydown", function (e) {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            window.askOracle();
+          }
+        });
+
+      // Floating leaves animation
+      (function () {
+        const container = document.getElementById("leaves-container");
+        const numLeaves = 42;
+        const leaves = [];
+
+        // Create leaf elements
+        for (let i = 0; i < numLeaves; i++) {
+          // Subtle random variations in shape
+          const height = 2 + (Math.random() - 0.5) * 0.6; // 1.7 to 2.3
+          const width = 1.2 + (Math.random() - 0.5) * 0.4; // 1.0 to 1.4
+          const curve = 0.75 + (Math.random() - 0.5) * 0.25; // 0.625 to 0.875
+
+          const leafPath = `M0,-${height} Q${width},-${curve} ${width},0 Q${width},${curve} 0,${height} Q-${width},${curve} -${width},0 Q-${width},-${curve} 0,-${height} Z`;
+
+          const leaf = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "path",
+          );
+          // Subtle color variation around the base cyan
+          const hue = 195 + (Math.random() - 0.5) * 20; // 185 to 205
+          const sat = 65 + (Math.random() - 0.5) * 15; // 57.5 to 72.5
+          const light = 69 + (Math.random() - 0.5) * 10; // 64 to 74
+
+          leaf.setAttribute("d", leafPath);
+          leaf.setAttribute("fill", `hsl(${hue}, ${sat}%, ${light}%)`);
+          leaf.setAttribute("filter", "url(#leaf-glow)");
+
+          // Distribute leaves across the area with some randomness
+          const baseX = 15 + (i % 7) * 10 + Math.random() * 8;
+          const baseY = 10 + Math.floor(i / 7) * 14 + Math.random() * 10;
+
+          const leafData = {
+            el: leaf,
+            x: baseX,
+            y: baseY,
+            baseX: baseX,
+            baseY: baseY,
+            rotation: Math.random() * 360,
+            rotationSpeed: (Math.random() - 0.5) * 0.3,
+            // Primary drift (slow, large movement)
+            driftPhase1: Math.random() * Math.PI * 2,
+            driftSpeed1: 0.15 + Math.random() * 0.1,
+            driftAmpX1: 8 + Math.random() * 6,
+            driftAmpY1: 5 + Math.random() * 4,
+            // Secondary drift (faster, smaller wobble)
+            driftPhase2: Math.random() * Math.PI * 2,
+            driftSpeed2: 0.4 + Math.random() * 0.3,
+            driftAmpX2: 2 + Math.random() * 2,
+            driftAmpY2: 1.5 + Math.random() * 1.5,
+          };
+
+          leaves.push(leafData);
+          container.appendChild(leaf);
         }
 
-        initClient();
+        function animate() {
+          const time = Date.now() * 0.001;
 
-        window.askOracle = async function() {
-            const questionEl = document.getElementById('question');
-            const responseEl = document.getElementById('response');
-            const answerEl = document.getElementById('answer');
-            const interpretationEl = document.getElementById('interpretation');
-            const btnEl = document.getElementById('ask-btn');
+          leaves.forEach((leaf) => {
+            // Primary slow drift
+            const drift1X =
+              Math.sin(time * leaf.driftSpeed1 + leaf.driftPhase1) *
+              leaf.driftAmpX1;
+            const drift1Y =
+              Math.cos(time * leaf.driftSpeed1 * 0.8 + leaf.driftPhase1) *
+              leaf.driftAmpY1;
 
-            const question = questionEl.value.trim();
-            if (!question) return;
+            // Secondary faster wobble
+            const drift2X =
+              Math.sin(time * leaf.driftSpeed2 + leaf.driftPhase2) *
+              leaf.driftAmpX2;
+            const drift2Y =
+              Math.cos(time * leaf.driftSpeed2 * 1.2 + leaf.driftPhase2) *
+              leaf.driftAmpY2;
 
-            // Show loading state
-            btnEl.disabled = true;
-            btnEl.textContent = 'Consulting...';
-            responseEl.classList.add('visible');
-            answerEl.innerHTML = '<span class="loading">The oracle contemplates...</span>';
-            interpretationEl.textContent = '';
+            // Combine drifts
+            leaf.x = leaf.baseX + drift1X + drift2X;
+            leaf.y = leaf.baseY + drift1Y + drift2Y;
 
-            try {
-                if (!client) {
-                    client = await Client.connect("gworley3/kakuora");
-                }
+            // Slow rotation
+            leaf.rotation += leaf.rotationSpeed;
 
-                const result = await client.predict("/consult", {
-                    question: question
-                });
+            // Update element with transform
+            leaf.el.setAttribute(
+              "transform",
+              `translate(${leaf.x}, ${leaf.y}) rotate(${leaf.rotation}) scale(0.8)`,
+            );
+          });
 
-                const [answer, interpretation] = result.data;
-                answerEl.textContent = answer;
-                interpretationEl.textContent = interpretation;
+          requestAnimationFrame(animate);
+        }
 
-            } catch (e) {
-                console.error("Error:", e);
-                answerEl.innerHTML = '<span class="error">The oracle is silent. Please try again.</span>';
-                interpretationEl.textContent = '';
-            } finally {
-                btnEl.disabled = false;
-                btnEl.textContent = 'Ask';
-            }
-        };
-
-        // Allow Enter key to submit (Shift+Enter for newline)
-        document.getElementById('question').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                window.askOracle();
-            }
-        });
+        animate();
+      })();
     </script>
-</body>
+  </body>
 </html>
